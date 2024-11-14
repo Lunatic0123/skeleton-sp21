@@ -7,13 +7,7 @@ package DebugExercise;
 public class DebugExercise2 {
     /** Returns the max of a and b. Do not step into this function. */
     public static int max(int a, int b) {
-        int w = (b - a) >> 31;
-        /* If you're stepping into this function, click the
-           step out button because you're not going to learn anything. */
-        int z = ~(b - a) >> 31;
-
-        int max = b & w | a & z;
-        return max;
+        return Math.max(a,b);
     }
 
 
@@ -22,17 +16,7 @@ public class DebugExercise2 {
         int x = a, y = b;
         /* If you're stepping into this function, click the
            step out button because you're not going to learn anything. */
-        int xor, and, temp;
-        and = x & y;
-        xor = x ^ y;
-
-        while (and != 0) {
-            and <<= 1;
-            temp = xor ^ and;
-            and &= xor;
-            xor = temp;
-        }
-        return xor;
+        return x+y;
     }
 
     /** Returns a new array where entry i is the max of
@@ -40,28 +24,20 @@ public class DebugExercise2 {
      * and b = {0, 20, 5}, this function will return {1, 20, 5}.
      * */
     public static int[] arrayMax(int[] a, int[] b) {
-        if (a.length != b.length) {
-            System.out.println("ERROR! Arrays don't match");
-            return null;
+        int[] rlt = new int[a.length];
+        for(int i = 0;i<a.length;i++){
+            rlt[i] = max(a[i],b[i]);
         }
-        int[] returnArray = new int[a.length];
-        for (int i = 0; i < a.length; i += 1) {
-            int biggerValue = max(a[i], b[i]);
-            returnArray[i] = biggerValue;
-        }
-
-        return returnArray;
+        return rlt;
     }
 
     /** Returns the sum of all elements in x. */
     public static int arraySum(int[] x) {
-        int i = 0;
-        int sum = 0;
-        while (i < x.length) {
-            sum = sum + add(sum, x[i]);
-            i = i + 1;
+        int rlt = 0;
+        for(int i = 0;i<x.length;i++){
+            rlt = add(rlt,x[i]);
         }
-        return sum;
+        return rlt;
     }
 
     /** Returns the sum of the element-wise max of a and b.
