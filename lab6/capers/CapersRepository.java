@@ -1,7 +1,7 @@
 package capers;
 
 import java.io.File;
-import static capers.Utils.*;
+import java.io.IOException;
 
 /** A repository for Capers 
  * @author TODO
@@ -18,7 +18,7 @@ public class CapersRepository {
     static final File CWD = new File(System.getProperty("user.dir"));
 
     /** Main metadata folder. */
-    static final File CAPERS_FOLDER = null; // TODO Hint: look at the `join`
+    static final File CAPERS_FOLDER = Utils.join(".capers", "story"); // TODO Hint: look at the `join`
                                             //      function in Utils
 
     /**
@@ -31,7 +31,20 @@ public class CapersRepository {
      *    - story -- file containing the current story
      */
     public static void setupPersistence() {
-        // TODO
+        File d = new File(".capers");
+        if(!d.exists()){
+            d.mkdir();
+        }
+        File story = new File(".capers/story");
+        File dogs = new File(".capers/dogs");
+        try {
+            story.createNewFile();
+        }catch(IOException ex){
+            System.out.println("IOerror!");
+        }
+        if(!dogs.exists()){
+            dogs.mkdir();
+        }
     }
 
     /**
@@ -40,7 +53,12 @@ public class CapersRepository {
      * @param text String of the text to be appended to the story
      */
     public static void writeStory(String text) {
-        // TODO
+        String s = Utils.readContentsAsString(CAPERS_FOLDER);
+        if (!s.isEmpty()) {
+            text = s + '\n' +text;
+        }
+        Utils.writeContents(CAPERS_FOLDER, text);
+        System.out.println(Utils.readContentsAsString(CAPERS_FOLDER));
     }
 
     /**
@@ -49,7 +67,9 @@ public class CapersRepository {
      * Also prints out the dog's information using toString().
      */
     public static void makeDog(String name, String breed, int age) {
-        // TODO
+        Dog newdog = new Dog(name, breed, age);
+        newdog.saveDog();
+        System.out.println(newdog.toString());
     }
 
     /**
@@ -59,6 +79,9 @@ public class CapersRepository {
      * @param name String name of the Dog whose birthday we're celebrating.
      */
     public static void celebrateBirthday(String name) {
-        // TODO
+        File me = new File(".capers/dogs/" + name);
+        Dog temp = Utils.readObject(me, Dog.class);
+        temp.haveBirthday();
+        Utils.writeObject(me, temp);
     }
 }
